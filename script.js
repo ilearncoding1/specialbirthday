@@ -5,18 +5,23 @@ let birthdaySound = new Audio('https://ilearncoding1.github.io/specialbirthday/D
 
 let isPlaying = false; // Prevents multiple birthday sound plays
 
+// ✅ Try to autoplay music when page loads
+document.addEventListener("DOMContentLoaded", function () {
+    startCountdownMusic(); // Attempt to play music
+});
+
+// ✅ Backup: Start music if autoplay fails (first user interaction)
+document.addEventListener('click', function () {
+    if (countdownMusic.paused) {
+        startCountdownMusic();
+    }
+}, { once: true }); // Runs only once
+
 // Function to play countdown music
 function startCountdownMusic() {
     countdownMusic.volume = 0.5; // Adjust volume if needed
     countdownMusic.play().catch(err => console.error("Error playing countdown music:", err));
 }
-
-// Ensure countdown music starts after user interaction
-document.addEventListener('click', function() {
-    if (countdownMusic.paused) {
-        startCountdownMusic();
-    }
-}, { once: true }); // Runs only once
 
 // Countdown Logic
 const birthdayDate = new Date('February 23, 2025 00:00:00').getTime();
