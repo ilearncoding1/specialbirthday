@@ -1,25 +1,32 @@
 // Declare audio objects
 let countdownMusic = new Audio('https://ilearncoding1.github.io/specialbirthday/ninjago.mp3');
 countdownMusic.loop = true; // Keep playing until countdown reaches 0
-countdownMusic.muted = true; // Start muted to allow autoplay
 
 let birthdaySound = new Audio('https://ilearncoding1.github.io/specialbirthday/Devin.mp3');
 
 let isPlaying = false; // Prevents multiple birthday sound plays
 
-// ✅ Try to autoplay music when page loads
+// ✅ Hidden silent video trick (forces browsers to allow autoplay)
+let silentVideo = document.createElement("video");
+silentVideo.src = "https://www.w3schools.com/html/mov_bbb.mp4"; // Any silent video
+silentVideo.muted = true;
+silentVideo.playsInline = true;
+silentVideo.style.display = "none"; // Hide the video
+document.body.appendChild(silentVideo);
+
+// ✅ Try autoplay when page loads
 document.addEventListener("DOMContentLoaded", function () {
-    countdownMusic.play().then(() => {
-        countdownMusic.muted = false; // Unmute after it starts playing
+    silentVideo.play().then(() => {
+        // After the silent video starts, play the actual music
+        startCountdownMusic();
     }).catch(err => {
-        console.error("Autoplay blocked. Waiting for user interaction.");
+        console.error("Autoplay blocked, waiting for user interaction.");
     });
 });
 
-// ✅ Backup: Start music if autoplay fails (first user interaction)
-document.addEventListener('click', function () {
+// ✅ Backup: If autoplay fails, play after any interaction
+document.addEventListener("click", function () {
     if (countdownMusic.paused) {
-        countdownMusic.muted = false;
         startCountdownMusic();
     }
 }, { once: true }); // Runs only once
@@ -29,7 +36,6 @@ function startCountdownMusic() {
     countdownMusic.volume = 0.5; // Adjust volume if needed
     countdownMusic.play().catch(err => console.error("Error playing countdown music:", err));
 }
-
 // Countdown Logic
 const birthdayDate = new Date('February 23, 2025 00:00:00').getTime();
 
