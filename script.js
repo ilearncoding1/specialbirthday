@@ -1,18 +1,25 @@
 // Declare audio objects
 let countdownMusic = new Audio('https://ilearncoding1.github.io/specialbirthday/ninjago.mp3');
 countdownMusic.loop = true; // Keep playing until countdown reaches 0
+countdownMusic.muted = true; // Start muted to allow autoplay
+
 let birthdaySound = new Audio('https://ilearncoding1.github.io/specialbirthday/Devin.mp3');
 
 let isPlaying = false; // Prevents multiple birthday sound plays
 
 // ✅ Try to autoplay music when page loads
 document.addEventListener("DOMContentLoaded", function () {
-    startCountdownMusic(); // Attempt to play music
+    countdownMusic.play().then(() => {
+        countdownMusic.muted = false; // Unmute after it starts playing
+    }).catch(err => {
+        console.error("Autoplay blocked. Waiting for user interaction.");
+    });
 });
 
 // ✅ Backup: Start music if autoplay fails (first user interaction)
 document.addEventListener('click', function () {
     if (countdownMusic.paused) {
+        countdownMusic.muted = false;
         startCountdownMusic();
     }
 }, { once: true }); // Runs only once
