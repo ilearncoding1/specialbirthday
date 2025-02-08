@@ -1,7 +1,7 @@
 // Declare audio objects
-let countdownMusic = new Audio('https://raw.githubusercontent.com/ilearncoding1.github.io/specialbirthday/ninjago.mp3');
+let countdownMusic = new Audio('https://raw.githubusercontent.com/ilearncoding1/specialbirthday/main/ninjago.mp3');
 countdownMusic.loop = true; // Keep playing until countdown reaches 0
-let birthdaySound = new Audio('https://raw.githubusercontent.com/ilearncoding1.github.io/specialbirthday/Devin.mp3');
+let birthdaySound = new Audio('https://raw.githubusercontent.com/ilearncoding1/specialbirthday/main/Devin.mp3');
 
 let isPlaying = false; // Prevents multiple birthday sound plays
 
