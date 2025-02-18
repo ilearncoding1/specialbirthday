@@ -207,7 +207,7 @@ button {
     background: #ffe0e0;
     padding: 30px;
     border-radius: 10px;
-    font-size: 1.8em;
+    font-size: 1.5em;
     color: #ff33cc;
     animation: showMessage 2s ease-in-out;
     width: 90%;  /* Ensure it doesn't exceed the container */
@@ -231,4 +231,98 @@ button {
     0% { transform: translateX(0); }  /* Start centered */
     100% { transform: translateX(30px); } /* Moves right */
 }
+/* Add balloon style */
+.balloon {
+    position: absolute;
+    bottom: 0;
+    width: 50px;
+    height: 70px;
+    border-radius: 50%;
+    animation: floatUp 7s ease-in-out infinite;
+}
 
+@keyframes floatUp {
+    0% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(-100vh); /* Balloons go higher */
+    }
+}
+
+.balloon.popped {
+    animation: popBalloon 0.5s forwards;
+}
+
+@keyframes popBalloon {
+    0% {
+        transform: scale(1);
+    }
+    100% {
+        transform: scale(0);
+        opacity: 0;
+    }
+}
+
+.party-popper {
+    position: absolute;
+    top: 50px;
+    font-size: 3rem;
+    animation: popperBounce 1s ease-out;
+}
+
+@keyframes popperBounce {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-30px); }
+    100% { transform: translateY(0px); }
+}
+
+/* Happy Birthday Banner */
+.banner {
+    position: fixed;
+    top: 10px;
+    width: 100%;
+    text-align: center;
+    font-size: 3rem;
+    color: #cb00f3;
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    z-index: 999;
+    display: none;
+}
+
+.banner h1 {
+    margin: 0;
+    padding: 0;
+}
+#birthdayBanner {
+    position: fixed;
+    top: -200px; /* Initially hidden above the screen */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 600px; /* Adjust size */
+    transition: top 2s ease-in-out;
+}
+
+#birthdayBanner img {
+    width: 100%;
+}
+#birthdayBanner {
+    pointer-events: none; /* Allows clicks to pass through */
+}
+
+#birthdayMessage {
+    position: relative;
+    z-index: 10; /* Makes sure it's above other elements */
+}
+#cake {
+    position: fixed;
+    bottom: -200px; /* Initially hidden */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+    transition: bottom 2s ease-in-out;
+    z-index: 20; /* Make sure it's above other elements */
+}
