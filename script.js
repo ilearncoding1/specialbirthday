@@ -19,7 +19,7 @@ document.addEventListener('click', function() {
 }, { once: true }); // Runs only once
 
 // Countdown Logic
-const birthdayDate = new Date('February 23, 2025 00:00:00').getTime();
+const birthdayDate = new Date('February 18, 2025 00:00:00').getTime();
 
 const countdown = setInterval(() => {
     const now = new Date().getTime();
