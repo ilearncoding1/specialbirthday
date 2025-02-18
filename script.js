@@ -1,34 +1,23 @@
-// Declare audio objects
+// Declare audio objects 
 let countdownMusic = new Audio('https://ilearncoding1.github.io/specialbirthday/ninjago.mp3');
 countdownMusic.loop = true; // Keep playing until countdown reaches 0
-countdownMusic.muted = true; // Start muted to allow autoplay
-
 let birthdaySound = new Audio('https://ilearncoding1.github.io/specialbirthday/Devin.mp3');
 
 let isPlaying = false; // Prevents multiple birthday sound plays
-
-// ✅ Try to autoplay music when page loads
-document.addEventListener("DOMContentLoaded", function () {
-    countdownMusic.play().then(() => {
-        countdownMusic.muted = false; // Unmute after it starts playing
-    }).catch(err => {
-        console.error("Autoplay blocked. Waiting for user interaction.");
-    });
-});
-
-// ✅ Backup: Start music if autoplay fails (first user interaction)
-document.addEventListener('click', function () {
-    if (countdownMusic.paused) {
-        countdownMusic.muted = false;
-        startCountdownMusic();
-    }
-}, { once: true }); // Runs only once
 
 // Function to play countdown music
 function startCountdownMusic() {
     countdownMusic.volume = 0.5; // Adjust volume if needed
     countdownMusic.play().catch(err => console.error("Error playing countdown music:", err));
 }
+
+// Ensure countdown music starts after user interaction
+document.addEventListener('click', function() {
+    if (countdownMusic.paused && !isPlaying) {
+        startCountdownMusic();
+    }
+}, { once: true }); // Runs only once
+
 // Countdown Logic
 const birthdayDate = new Date('February 23, 2025 00:00:00').getTime();
 
@@ -65,6 +54,18 @@ const countdown = setInterval(() => {
 
         // ✅ Trigger confetti celebration
         celebrateBirthday();
+
+        // ✅ Show cake
+        showCake();
+
+        // ✅ Show Happy Birthday Banner
+        showBanner();
+
+        // 🎈 Start floating balloons after countdown is over
+        startBalloons();
+
+        // 🎊 Launch streamers from the sides
+        launchStreamers();
     }
 }, 1000); // Update every second
 
@@ -76,6 +77,15 @@ function celebrateBirthday() {
         origin: { y: 0.6 },
         colors: ['#ff7a7a', '#ff33cc', '#ff7a7a', '#f0f0f0']
     });
+}
+
+// Show Happy Birthday Banner
+function showBanner() {
+  const banner = document.getElementById('birthdayBanner');
+  banner.style.display = 'block';
+  setTimeout(() => {
+      banner.style.top = '20px'; // Slide down animation
+  }, 100);
 }
 
 // Play/Stop Buttons
@@ -113,3 +123,99 @@ document.getElementById('shareButton').addEventListener('click', () => {
         alert('URL copied to clipboard!');
     }
 });
+
+// 🎈 Balloons Container
+const balloonContainer = document.getElementById('balloon-container');
+
+// Array of colors for balloons
+const balloonColors = ['#ff7a7a', '#ff33cc', '#33ccff', '#ffcc33', '#7a7aff', '#ff80bf'];
+
+function startBalloons() {
+    // Start creating balloons after countdown ends
+    for (let i = 0; i < 10; i++) {
+        createBalloon();
+    }
+}
+
+function createBalloon() {
+    const balloon = document.createElement('div');
+    balloon.classList.add('balloon');
+
+    // Set random color for each balloon
+    const randomColor = balloonColors[Math.floor(Math.random() * balloonColors.length)];
+    balloon.style.backgroundColor = randomColor;
+
+    balloon.style.left = Math.random() * 90 + 'vw';
+    balloon.style.animationDuration = Math.random() * 5 + 7 + 's'; // Float up in 7-12 seconds (higher)
+    balloon.addEventListener('click', popBalloon);
+    balloonContainer.appendChild(balloon);
+    
+    setTimeout(() => {
+        balloon.remove(); // Remove balloon when it reaches the top
+        createBalloon(); // Create a new balloon after it disappears
+    }, parseFloat(balloon.style.animationDuration) * 1000);
+}
+
+function popBalloon(event) {
+    event.target.classList.add('popped');
+    setTimeout(() => {
+        event.target.remove();
+        createBalloon(); // Replace popped balloon
+    }, 500);
+}
+
+// 🎂 Birthday Cake Logic
+const cake = document.getElementById('cake');
+
+function showCake() {
+    cake.style.display = 'block';
+    setTimeout(() => {
+        cake.style.bottom = '50px'; // Slide up the cake
+    }, 100); 
+}
+function celebrateBirthday() {
+  for (let i = 0; i < 2; i++) { // Two poppers, left and right
+      const popper = document.createElement('div');
+      popper.classList.add('party-popper');
+      popper.innerHTML = '🎉'; // Party popper emoji
+      popper.style.left = i === 0 ? '5%' : '95%'; // Left and right positions
+      popper.style.transform = i === 0 ? 'rotate(-20deg)' : 'rotate(20deg)';
+
+      document.body.appendChild(popper);
+      setTimeout(() => popper.remove(), 2000); // Remove after animation
+  }
+
+  // Fire confetti to simulate the pop effect
+  confetti({
+      particleCount: 50,
+      spread: 70,
+      origin: { x: 0.1 } // Left side
+  });
+  confetti({
+      particleCount: 50,
+      spread: 70,
+      origin: { x: 0.9 } // Right side
+  });
+}
+// Run confetti every 5 seconds
+setInterval(launchConfetti, 5000);
+// Function to trigger confetti
+
+function launchConfetti(event) {
+    confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { x: event.clientX / window.innerWidth, y: event.clientY / window.innerHeight }
+    });
+}
+
+// For a single emoji
+document.getElementById("partyPopper").addEventListener("click", launchConfetti);
+
+// For multiple emojis
+document.querySelectorAll(".popper").forEach(popper => {
+    popper.addEventListener("click", launchConfetti);
+    
+});
+
+
